@@ -8,7 +8,7 @@ INC_DIR := include
 # Compiler settings
 CC := clang
 CXX := clang++
-CPPFLAGS := -I $(INC_DIR) -DVERSION=1
+CPPFLAGS := -I $(INC_DIR) -DVERSION=1.0
 CFLAGS := -O2
 CXXFLAGS := $(CFLAGS) -std=c++17
 LDFLAGS := -shared -O2 -flto
@@ -16,11 +16,13 @@ LDFLAGS := -shared -O2 -flto
 # Target settings
 ifeq ($(OS),Windows_NT)
 	TARGET := lw_cpp_ctypes.dll
+	EXE_EXT := .exe
 	OBJ_EXT := obj
 	PLATFORM_DIR := windows
 	NULL_DEVICE := NUL
 else
 	TARGET := lw_cpp_ctypes.so
+	EXE_EXT := 
 	OBJ_EXT := o
 	PLATFORM_DIR := linux
 	NULL_DEVICE := /dev/null
@@ -38,11 +40,14 @@ COMPILATION_DB := $(BUILD_DIR)/compile_commands.json
 
 all: $(BIN_DIR)/$(TARGET) compile_commands
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+$(BUILD__DIR):
+	mkdir -p $@
+
+$(BUILD_DIR)/.gitignore:
+	echo '*' > $@
 
 $(BIN_DIR):
-	mkdir -p $(BIN_DIR)
+	mkdir -p $@
 
 # Compile each .cpp file to an object file
 $(BUILD_DIR)/%.$(OBJ_EXT): $(SRC_DIR)/%.cpp | $(BUILD_DIR)
@@ -66,4 +71,10 @@ $(BUILD_DIR)/%.json: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
 compile_commands: ./compile_commands.json
 
 clean:
-	rm -rf $(BUILD_DIR)/*.$(OBJ_EXT) $(BIN_DIR)/$(TARGET) $(BIN_DIR)/*.lib $(BIN_DIR)/*.exp $(BUILD_DIR)/*.json ./compile_commands.json
+	rm -rf \
+		$(BUILD_DIR)/*.$(OBJ_EXT) \
+		$(BIN_DIR)/$(TARGET) \
+		$(BIN_DIR)/*.lib \
+		$(BIN_DIR)/*.exp \
+		$(BUILD_DIR)/*.json \
+		./compile_commands.json
