@@ -11,7 +11,7 @@ CXX := clang++
 CPPFLAGS := -I $(INC_DIR) -DVERSION=1
 CFLAGS := -O2
 CXXFLAGS := $(CFLAGS) -std=c++17
-LDFLAGS := -shared -O2
+LDFLAGS := -shared -O2 -flto
 
 # Target settings
 ifeq ($(OS),Windows_NT)
