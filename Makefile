@@ -5,13 +5,20 @@ BIN_DIR := bin
 SRC_DIR := src
 INC_DIR := include
 
-# Compiler settings
+# ----- Compiler settings -----
+# c and c++
 CC := clang
 CXX := clang++
 CPPFLAGS := -I $(INC_DIR) -DVERSION=1.0
+# fortran
+FC := gfortran
+# copmilation flags (c, c++, fortran)
 CFLAGS := -O2
 CXXFLAGS := $(CFLAGS) -std=c++17
-LDFLAGS := -shared -O2 -flto
+# use this for shared libraries
+LDFLAGS := -shared -O2 -flto 
+# use this for static libraries or executables
+# LDFLAGS := -O2 -flto
 
 # Target settings
 ifeq ($(OS),Windows_NT)
